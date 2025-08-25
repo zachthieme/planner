@@ -198,14 +198,36 @@ func monthPage(pdf *fpdf.Fpdf, cfg PlannerConfig, links *Links, month int) {
 
 	weeks := monthWeeks(cfg.Year, time.Month(month))
 	pdf.SetFont(cfg.Layout.Font, "", cfg.Layout.BodySize)
+	startY := pdf.GetY()
+
+	weekColWidth := 300.0
+	dayColWidth := 60.0
+
+	// List weeks on the left
 	for idx, wk := range weeks {
 		mon, sun := wk[0], wk[6]
 		lbl := fmt.Sprintf("Week %d  (%s – %s)", idx+1, mon.Format("Jan 02"), sun.Format("Jan 02"))
 		y := pdf.GetY()
-		pdf.CellFormat(0, 14, lbl, "", 1, "L", false, 0, "")
+		pdf.CellFormat(weekColWidth, 14, lbl, "", 1, "L", false, 0, "")
 		if cfg.Layout.ShowWeeks {
-			pdf.Link(cfg.Layout.Margin, y, 360, 14, links.Weeks[month][idx])
+			pdf.Link(cfg.Layout.Margin, y, weekColWidth, 14, links.Weeks[month][idx])
 		}
+	}
+
+	// Column of days on the right
+	daysInMonth := time.Date(cfg.Year, time.Month(month+1), 0, 0, 0, 0, 0, time.UTC).Day()
+	dayX := cfg.Layout.Margin + weekColWidth + 10
+	pdf.SetXY(dayX, startY)
+	for d := 1; d <= daysInMonth; d++ {
+		y := pdf.GetY()
+		label := fmt.Sprintf("%2d", d)
+		pdf.CellFormat(dayColWidth, 14, label, "", 0, "L", false, 0, "")
+		if cfg.Layout.ShowDays {
+			dt := time.Date(cfg.Year, time.Month(month), d, 0, 0, 0, 0, time.UTC)
+			key := dt.Format("2006-01-02")
+			pdf.Link(dayX, y, dayColWidth, 14, links.Days[key])
+		}
+		pdf.SetXY(dayX, y+14)
 	}
 }
 
