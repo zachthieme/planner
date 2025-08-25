@@ -117,13 +117,13 @@ func addNav(pdf *fpdf.Fpdf, l Layout, homeLink, backLink int) {
 	// Back (top-left)
 	if backLink != 0 {
 		pdf.SetXY(l.Margin, l.Margin*0.6)
-		pdf.CellFormat(42, 16, "◀ Back", "", 0, "L", false, 0, "")
+		pdf.CellFormat(42, 16, "< Back", "", 0, "L", false, 0, "")
 		pdf.Link(l.Margin, l.Margin*0.6, 42, 16, backLink)
 	}
 	// Home (top-right)
 	if homeLink != 0 {
 		pdf.SetXY(w-l.Margin-60, l.Margin*0.6)
-		pdf.CellFormat(60, 16, "Home ⌂", "", 0, "R", false, 0, "")
+		pdf.CellFormat(60, 16, "Home", "", 0, "R", false, 0, "")
 		pdf.Link(w-l.Margin-60, l.Margin*0.6, 60, 16, homeLink)
 	}
 	pdf.Ln(10)
@@ -284,7 +284,7 @@ func buildPlanner(cfg PlannerConfig) error {
 			OrientationStr: "P",
 			UnitStr:        "pt",
 			Size: fpdf.SizeType{
-				Wd: 504, Hd: 672,
+				Wd: 504, Ht: 672,
 			},
 		})
 	default:
