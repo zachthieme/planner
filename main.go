@@ -284,7 +284,7 @@ func buildPlanner(cfg PlannerConfig) error {
 			OrientationStr: "P",
 			UnitStr:        "pt",
 			Size: fpdf.SizeType{
-				Wd: 504, Hd: 672,
+				Wd: 504, Ht: 672,
 			},
 		})
 	default:
