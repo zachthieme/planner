@@ -219,11 +219,11 @@ func monthPage(pdf *fpdf.Fpdf, cfg PlannerConfig, links *Links, month int) {
 	dayX := cfg.Layout.Margin + weekColWidth + 10
 	pdf.SetXY(dayX, startY)
 	for d := 1; d <= daysInMonth; d++ {
-		dt := time.Date(cfg.Year, time.Month(month), d, 0, 0, 0, 0, time.UTC)
-		label := fmt.Sprintf("%2d %s", d, dt.Format("Mon"))
 		y := pdf.GetY()
+		label := fmt.Sprintf("%2d", d)
 		pdf.CellFormat(dayColWidth, 14, label, "", 0, "L", false, 0, "")
 		if cfg.Layout.ShowDays {
+			dt := time.Date(cfg.Year, time.Month(month), d, 0, 0, 0, 0, time.UTC)
 			key := dt.Format("2006-01-02")
 			pdf.Link(dayX, y, dayColWidth, 14, links.Days[key])
 		}
